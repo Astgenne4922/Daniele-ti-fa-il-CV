@@ -1,0 +1,64 @@
+<ng-container [formGroup]="form">
+    <div formArrayName="lingue">
+        @for (lingua of formArray.controls; track lingua; let idx = $index) {
+        <mat-card appearance="outlined" [formGroupName]="idx">
+            <mat-card-header>
+                <mat-card-title>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Lingua</mat-label>
+                        <input matInput type="text" formControlName="lingua" />
+                        <mat-error>Campo obbligatorio</mat-error>
+                    </mat-form-field>
+                </mat-card-title>
+
+                <button type="button" mat-fab (click)="removeFields(idx)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </mat-card-header>
+
+            <mat-card-content>
+                <ul>
+                    <li>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Comprensione</mat-label>
+                            <input
+                                matInput
+                                type="text"
+                                formControlName="comprensione"
+                            />
+                            <mat-error>Campo obbligatorio</mat-error>
+                        </mat-form-field>
+                    </li>
+                    <li>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Parlato</mat-label>
+                            <input
+                                matInput
+                                type="text"
+                                formControlName="parlato"
+                            />
+                            <mat-error>Campo obbligatorio</mat-error>
+                        </mat-form-field>
+                    </li>
+                    <li>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Scritto</mat-label>
+                            <input
+                                matInput
+                                type="text"
+                                formControlName="scritto"
+                            />
+                            <mat-error>Campo obbligatorio</mat-error>
+                        </mat-form-field>
+                    </li>
+                </ul>
+            </mat-card-content>
+        </mat-card>
+        }
+
+        <button type="button" mat-fab extended (click)="addFields()">
+            <mat-icon>add</mat-icon>
+            Aggiungi
+        </button>
+    </div>
+</ng-container>

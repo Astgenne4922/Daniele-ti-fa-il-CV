@@ -1,0 +1,88 @@
+<h2 mat-dialog-title>Lista Completa</h2>
+
+<mat-dialog-content open>
+    <ul>
+        @for (cv of data; track cv.id; let idx = $index) {
+        <li>
+            <mat-checkbox
+                [checked]="cv.checked"
+                (change)="update($event.checked, idx)"
+            >
+                {{ cv.nome }} {{ cv.cognome }}
+                <br />
+                Ultima Modifica:
+                {{ cv.dataModifica | date : "mediumDate" : "" : "it-IT" }}
+            </mat-checkbox>
+
+            <span class="grid">
+                <button
+                    mat-stroked-button
+                    extended
+                    type="button"
+                    (click)="openPreviewDialog(idx)"
+                >
+                    <mat-icon>preview</mat-icon>
+                    Anteprima
+                </button>
+                <button
+                    mat-stroked-button
+                    extended
+                    type="button"
+                    (click)="openPreviewDialog(idx, true)"
+                >
+                    <mat-icon>preview</mat-icon>
+                    Anteprima Anonima
+                </button>
+                <button
+                    mat-stroked-button
+                    extended
+                    type="button"
+                    (click)="onDownload(idx)"
+                >
+                    <mat-icon>download</mat-icon>
+                    Scarica
+                </button>
+                <button
+                    mat-stroked-button
+                    extended
+                    type="button"
+                    (click)="onDownload(idx, true)"
+                >
+                    <mat-icon>download</mat-icon>
+                    Scarica Anonima
+                </button>
+            </span>
+        </li>
+
+        @if (!$last) {
+        <mat-divider></mat-divider>
+        } }
+    </ul>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <mat-checkbox
+        mat-dialog-title
+        class="example-margin"
+        [checked]="isAllChecked()"
+        [indeterminate]="partiallyComplete()"
+        (change)="update($event.checked)"
+    >
+        Seleziona Tutti
+    </mat-checkbox>
+
+    <span>
+        <button mat-stroked-button (click)="onDownloadAll()">
+            Scarica Selezionati
+        </button>
+        <button mat-stroked-button (click)="onDownloadAll(true)">
+            Scarica Selezionati (Anonimo)
+        </button>
+    </span>
+</mat-dialog-actions>
+
+@if (isLoading()) {
+<div class="spinner_overlay">
+    <mat-spinner></mat-spinner>
+</div>
+}

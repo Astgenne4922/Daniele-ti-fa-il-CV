@@ -1,0 +1,126 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-accordion multi>
+        <mat-expansion-panel expanded>
+            <mat-expansion-panel-header>
+                <mat-panel-title><h2>Anagrafica</h2></mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Telefono</mat-label>
+                <input matInput type="tel" formControlName="telefono" />
+                @if (form.controls.telefono.hasError('required')) {
+                <mat-error>Campo obbligatorio</mat-error>
+                } @else {
+                <mat-error>Numero di telefono non valido</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" formControlName="email" />
+                @if (form.controls.email.hasError('required')) {
+                <mat-error>Campo obbligatorio</mat-error>
+                } @else {
+                <mat-error>Email non valida</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Indirizzo</mat-label>
+                <input matInput type="text" formControlName="indirizzo" />
+                <mat-error>Campo obbligatorio</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Sito</mat-label>
+                <input matInput type="text" formControlName="sito" />
+            </mat-form-field>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel expanded>
+            <mat-expansion-panel-header>
+                <mat-panel-title><h2>Esperienza Personale</h2></mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <app-work-form-fields
+                [preload]="esperienze()"
+                formArrayName="esperienze"
+            />
+        </mat-expansion-panel>
+
+        <mat-expansion-panel expanded>
+            <mat-expansion-panel-header>
+                <mat-panel-title><h2>Studi</h2></mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <app-studies-form-fields
+                [preload]="studi()"
+                formArrayName="studi"
+            />
+        </mat-expansion-panel>
+
+        <mat-expansion-panel expanded>
+            <mat-expansion-panel-header>
+                <mat-panel-title><h2>Lingue</h2></mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <app-lang-form-fields [preload]="lingue()" formArrayName="lingue" />
+        </mat-expansion-panel>
+
+        <mat-expansion-panel expanded>
+            <mat-expansion-panel-header>
+                <mat-panel-title><h2>Skill</h2></mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <app-skills-form-fields [preload]="skill()" formArrayName="skill" />
+        </mat-expansion-panel>
+    </mat-accordion>
+
+    <div class="float-button">
+        <span>
+            <button
+                mat-fab
+                extended
+                type="submit"
+                [@error]="isErrorSubmit()"
+                (@error.done)="isErrorSubmit.set('good')"
+            >
+                <mat-icon>save</mat-icon>
+                Salva
+            </button>
+            @if (isAdmin) {
+            <button mat-fab extended type="button" (click)="openAdminDialog()">
+                <mat-icon>admin_panel_settings</mat-icon>
+                Tutti i CV
+            </button>
+            }
+        </span>
+
+        <span>
+            <button
+                mat-fab
+                extended
+                type="button"
+                (click)="openPreviewDialog()"
+                [@error]="isErrorPreview()"
+                (@error.done)="isErrorPreview.set('good')"
+            >
+                <mat-icon>preview</mat-icon>
+                Anteprima
+            </button>
+        </span>
+
+        <span>
+            <button mat-fab extended type="button" (click)="onDownload()">
+                <mat-icon>download</mat-icon>
+                Scarica
+            </button>
+        </span>
+    </div>
+</form>
+
+@if (isLoading()) {
+<div class="spinner_overlay">
+    <mat-spinner></mat-spinner>
+</div>
+}

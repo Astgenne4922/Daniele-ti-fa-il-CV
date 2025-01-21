@@ -1,0 +1,9 @@
+<h2 mat-dialog-title>Anteprima</h2>
+
+<mat-dialog-content open>
+    <pdf-viewer
+        [src]="data.url"
+        [fit-to-page]="true"
+        [zoom-scale]="'page-width'"
+    />
+</mat-dialog-content>

@@ -1,0 +1,36 @@
+@use "@angular/material" as mat;
+
+html {
+    color-scheme: light;
+    @include mat.theme(
+        (
+            color: mat.$green-palette,
+            typography: Roboto,
+            density: 0,
+        )
+    );
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 10px;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+mat-form-field {
+    margin: 0 10px;
+}
+
+.mdc-fab {
+    margin: 0 10px;
+    vertical-align: middle;
+}

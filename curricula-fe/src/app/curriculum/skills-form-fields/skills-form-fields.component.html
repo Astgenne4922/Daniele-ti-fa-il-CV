@@ -1,0 +1,66 @@
+<ng-container [formGroup]="form">
+    <div formArrayName="skill">
+        @for (skill of formArray.controls; track skill; let idx = $index) {
+        <mat-card appearance="outlined" [formGroupName]="idx">
+            <mat-card-header>
+                <mat-card-title>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Categoria</mat-label>
+                        <input
+                            matInput
+                            type="text"
+                            formControlName="categoria"
+                        />
+                        <mat-error>Campo obbligatorio</mat-error>
+                    </mat-form-field>
+                </mat-card-title>
+
+                <button type="button" mat-fab (click)="removeFields(idx)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </mat-card-header>
+
+            <mat-card-content formArrayName="lista">
+                <ul>
+                    @for (s of listaSkill(idx).controls; track s; let idx2 =
+                    $index) {
+                    <li>
+                        <mat-form-field appearance="outline">
+                            <input
+                                matInput
+                                type="text"
+                                [formControlName]="idx2"
+                            />
+                            <mat-error>Campo obbligatorio</mat-error>
+                        </mat-form-field>
+
+                        <button
+                            type="button"
+                            mat-fab
+                            (click)="removeSubFields(idx, idx2)"
+                        >
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </li>
+                    }
+                </ul>
+
+                <button
+                    type="button"
+                    mat-fab
+                    extended
+                    (click)="addSubFields(idx)"
+                >
+                    <mat-icon>add</mat-icon>
+                    Aggiungi Skill
+                </button>
+            </mat-card-content>
+        </mat-card>
+        }
+
+        <button type="button" mat-fab extended (click)="addFields()">
+            <mat-icon>add</mat-icon>
+            Aggiungi Categoria
+        </button>
+    </div>
+</ng-container>
