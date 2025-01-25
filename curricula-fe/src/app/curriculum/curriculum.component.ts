@@ -297,72 +297,14 @@ export class CurriculumComponent implements OnInit {
 
         if (this.form.value.esperienze) {
             value.esperienze = (this.form.value.esperienze as Esperienze)
-                ?.sort((a, b) => {
-                    const ai = a.dataInizio as Date;
-                    ai.setHours(0, 0, 0, 0);
-                    const af = a.dataFine as Date | undefined;
-                    af?.setHours(0, 0, 0, 0);
-                    const bi = b.dataInizio as Date;
-                    bi.setHours(0, 0, 0, 0);
-                    const bf = b.dataFine as Date | undefined;
-                    bf?.setHours(0, 0, 0, 0);
-
-                    if (bi.getTime() - ai.getTime() === 0) {
-                        if (!af && !bf) return 0;
-                        if (!af) return -1;
-                        if (!bf) return 1;
-
-                        return bf.getTime() - af.getTime();
-                    }
-
-                    return bi.getTime() - ai.getTime();
-                })
-                .map((e) => {
-                    return {
-                        ...e,
-                        dataInizio: e.dataInizio
-                            ? formatDate(e.dataInizio, 'YYYY-MM-dd', 'it-IT')
-                            : '',
-                        dataFine: e.dataFine
-                            ? formatDate(e.dataFine, 'YYYY-MM-dd', 'it-IT')
-                            : undefined,
-                    };
-                });
+                ?.sort(this.sortDates)
+                .map(this.mapDates<NonNullable<Esperienze>[0]>);
         }
 
         if (this.form.value.studi) {
             value.studi = (this.form.value.studi as Studi)
-                ?.sort((a, b) => {
-                    const ai = a.dataInizio as Date;
-                    ai.setHours(0, 0, 0, 0);
-                    const af = a.dataFine as Date | undefined;
-                    af?.setHours(0, 0, 0, 0);
-                    const bi = b.dataInizio as Date;
-                    bi.setHours(0, 0, 0, 0);
-                    const bf = b.dataFine as Date | undefined;
-                    bf?.setHours(0, 0, 0, 0);
-
-                    if (bi.getTime() - ai.getTime() === 0) {
-                        if (!af && !bf) return 0;
-                        if (!af) return -1;
-                        if (!bf) return 1;
-
-                        return bf.getTime() - af.getTime();
-                    }
-
-                    return bi.getTime() - ai.getTime();
-                })
-                .map((e) => {
-                    return {
-                        ...e,
-                        dataInizio: e.dataInizio
-                            ? formatDate(e.dataInizio, 'YYYY-MM-dd', 'it-IT')
-                            : '',
-                        dataFine: e.dataFine
-                            ? formatDate(e.dataFine, 'YYYY-MM-dd', 'it-IT')
-                            : undefined,
-                    };
-                });
+                ?.sort(this.sortDates)
+                .map(this.mapDates<NonNullable<Studi>[0]>);
         }
 
         if (this.form.value.lingue) {
@@ -392,5 +334,56 @@ export class CurriculumComponent implements OnInit {
         }
 
         return value;
+    }
+
+    private sortDates(
+        a: NonNullable<Studi | Esperienze>[0],
+        b: NonNullable<Studi | Esperienze>[0]
+    ) {
+        const ai =
+            typeof a.dataInizio === 'string'
+                ? new Date(a.dataInizio)
+                : (a.dataInizio as Date);
+        ai.setHours(0, 0, 0, 0);
+
+        const af =
+            typeof a.dataFine === 'string'
+                ? new Date(a.dataFine)
+                : (a.dataFine as Date | undefined);
+        af?.setHours(0, 0, 0, 0);
+
+        const bi =
+            typeof b.dataInizio === 'string'
+                ? new Date(b.dataInizio)
+                : (b.dataInizio as Date);
+        bi.setHours(0, 0, 0, 0);
+
+        const bf =
+            typeof b.dataFine === 'string'
+                ? new Date(b.dataFine)
+                : (b.dataFine as Date | undefined);
+        bf?.setHours(0, 0, 0, 0);
+
+        if (bi.getTime() - ai.getTime() === 0) {
+            if (!af && !bf) return 0;
+            if (!af) return -1;
+            if (!bf) return 1;
+
+            return bf.getTime() - af.getTime();
+        }
+
+        return bi.getTime() - ai.getTime();
+    }
+
+    private mapDates<T>(e: NonNullable<Studi | Esperienze>[0]) {
+        return {
+            ...e,
+            dataInizio: e.dataInizio
+                ? formatDate(e.dataInizio, 'YYYY-MM-dd', 'it-IT')
+                : '',
+            dataFine: e.dataFine
+                ? formatDate(e.dataFine, 'YYYY-MM-dd', 'it-IT')
+                : undefined,
+        } as T;
     }
 }

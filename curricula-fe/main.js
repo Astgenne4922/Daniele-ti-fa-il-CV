@@ -82,7 +82,7 @@ app.on("quit", () => {
 });
 
 function startServer() {
-    let apipath = path.join(process.resourcesPath, "Curricula.exe");
+    let apipath = path.join(/*process.resourcesPath, */ "Curricula.exe");
 
     // Spin up the exe or OSX excutable - self hosted x-plat .NET Core WebAPI
     apiProcess = spawn(apipath);
