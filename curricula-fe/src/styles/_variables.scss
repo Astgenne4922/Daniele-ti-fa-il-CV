@@ -1,0 +1,58 @@
+$app-color: #02a902;
+$app-white: #fff;
+$app-dirty-white: #fafafa;
+$app-grey-border: #dadfe2;
+$app-grey-background: #dee2e6;
+$app-grey-table-row: #f7f9fa;
+$app-table-header-grey: #e6ecef;
+$app-black: #2a3135;
+$app-dark-grey-selected: #363f46;
+$app-dark-grey-lines: #363d40;
+$app-medium-grey-border: #919596;
+$app-medium-grey: #7d8384;
+$app-light-grey: #dcd8d8;
+$app-grey: #aab3ba;
+$app-aliceblue: aliceblue;
+$app-bootstrap-green: #5dbf74;
+$app-red: #ee0010;
+$app-yellow: #fab54d;
+$app-bootstrap-red: #f9777f;
+$app-bootstrap-red-light: #f3a0a5;
+$app-font-color: #48606c;
+$app-white-opacity-10: #ffffff1a;
+$app-white-opacity-20: #ffffff33;
+$app-black-20-transparency: #00000033;
+$app-black-14-transparency: #00000024;
+$app-black-12-transparency: #0000001f;
+$app-black-shadow: #0000000f;
+$app-approved-leave: #5bb95b;
+$app-to-approve-leave: #f1cb33;
+$app-planned-leave: #aadbfa;
+$app-full-day-leave: #b20202;
+$app-permit-leave: #2F2FEAFF;
+$app-special-leave: purple;
+
+
+
+$app-orange-palette: (
+    50: #e0f5e0,
+    100: #b2e0b2,
+    200: #80cc80,
+    300: #4dd64d,
+    400: #27a627,
+    500: #02a902,
+    600: #01a601,
+    700: #00F07D,
+    800: #00EA6C,
+    900: #00E152,
+    contrast: (50: $app-black,
+        100: $app-black,
+        200: $app-black,
+        300: $app-white,
+        400: $app-white,
+        500: $app-white,
+        600: $app-white,
+        700: $app-white,
+        800: $app-white,
+        900: $app-white )
+);

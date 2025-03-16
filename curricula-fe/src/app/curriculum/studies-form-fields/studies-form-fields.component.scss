@@ -1,0 +1,53 @@
+@use "../../../styles/variables" as var;
+
+mat-divider {
+    margin-bottom: 20px;
+    border-color: var.$app-color;
+}
+
+fieldset {
+    border: 1px solid var.$app-color;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+
+    background-color: white;
+
+    legend {
+        padding: 10px;
+        font-weight: bold;
+    }
+
+    mat-form-field {
+        margin: 0 10px;
+    }
+
+    ::ng-deep {
+
+        mat-form-field>div.mat-mdc-text-field-wrapper,
+        mat-form-field>div.mat-mdc-form-field-infix {
+            padding: 5px !important;
+        }
+    }
+
+    .text {
+        margin: 0 10px;
+        width: 20%;
+    }
+
+    .mdc-text-field__input::-webkit-calendar-picker-indicator {
+        display: block;
+    }
+
+    .btn {
+        display: inline-flex;
+        margin-left: 10px;
+        margin-bottom: 22px;
+        height: auto;
+        padding: 10px;
+    }
+
+    .textarea {
+        display: flex;
+    }
+}

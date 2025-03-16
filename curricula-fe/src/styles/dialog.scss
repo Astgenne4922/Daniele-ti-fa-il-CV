@@ -1,0 +1,21 @@
+@use 'variables' as var;
+
+.dialog-title-container {
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
+}
+
+.dialog-footer-buttons-container {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+
+	button {
+		margin-right: 15px;
+		margin-top: 15px;
+		margin-bottom: 15px;
+	}
+}
+
+

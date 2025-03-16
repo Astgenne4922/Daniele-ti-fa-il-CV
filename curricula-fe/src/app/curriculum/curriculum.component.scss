@@ -1,0 +1,56 @@
+@use "../../styles/variables" as var;
+
+form {
+    margin: 10px;
+}
+
+fieldset {
+    border: 1px solid var.$app-color;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+
+    background-color: white;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    legend {
+        padding: 10px;
+        font-weight: bold;
+    }
+
+    mat-form-field {
+        margin: 0 10px;
+        flex-grow: 1;
+    }
+
+    ::ng-deep {
+
+        mat-form-field>div.mat-mdc-text-field-wrapper,
+        mat-form-field>div.mat-mdc-form-field-infix {
+            padding: 5px !important;
+        }
+    }
+}
+
+.float-button {
+    display: flex;
+    position: sticky;
+    bottom: 0;
+    padding: 2px;
+
+    margin-left: auto;
+    width: fit-content;
+
+    justify-content: end;
+    align-items: center;
+    z-index: 1000;
+
+    button {
+        margin: 5px;
+        height: auto;
+        padding: 10px;
+    }
+}

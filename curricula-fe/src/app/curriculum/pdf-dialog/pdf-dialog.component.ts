@@ -7,7 +7,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     selector: 'app-pdf-dialog',
     imports: [PdfViewerModule, MatDialogModule, MatButtonModule],
     templateUrl: './pdf-dialog.component.html',
-    styleUrl: './pdf-dialog.component.css',
+    styleUrl: './pdf-dialog.component.scss',
 })
 export class PdfDialogComponent {
     data = inject<{ url: string }>(MAT_DIALOG_DATA);

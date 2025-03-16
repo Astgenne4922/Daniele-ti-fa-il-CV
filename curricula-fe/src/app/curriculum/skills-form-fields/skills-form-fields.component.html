@@ -1,66 +1,60 @@
 <ng-container [formGroup]="form">
-    <div formArrayName="skill">
+    <fieldset formArrayName="skill">
+        <legend>Competenze</legend>
         @for (skill of formArray.controls; track skill; let idx = $index) {
-        <mat-card appearance="outlined" [formGroupName]="idx">
-            <mat-card-header>
-                <mat-card-title>
-                    <mat-form-field appearance="outline">
-                        <mat-label>Categoria</mat-label>
-                        <input
-                            matInput
-                            type="text"
-                            formControlName="categoria"
-                        />
+        <div appearance="outlined" [formGroupName]="idx">
+            <button
+                type="button"
+                class="btn btn-primary"
+                (click)="removeFields(idx)"
+            >
+                <mat-icon>delete</mat-icon>
+            </button>
+
+            <mat-form-field floatLabel="always" appearance="outline">
+                <mat-label>Categoria</mat-label>
+                <input matInput type="text" formControlName="categoria" />
+                <mat-error>Campo obbligatorio</mat-error>
+            </mat-form-field>
+
+            <div formArrayName="lista">
+                @for (s of listaSkill(idx).controls; track s; let idx2 = $index)
+                {
+                <span>
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        (click)="removeSubFields(idx, idx2)"
+                    >
+                        <mat-icon>delete</mat-icon>
+                    </button>
+
+                    <mat-form-field floatLabel="always" appearance="outline">
+                        <mat-label>Skill {{ idx2 + 1 }}</mat-label>
+                        <input matInput type="text" [formControlName]="idx2" />
                         <mat-error>Campo obbligatorio</mat-error>
                     </mat-form-field>
-                </mat-card-title>
-
-                <button type="button" mat-fab (click)="removeFields(idx)">
-                    <mat-icon>delete</mat-icon>
-                </button>
-            </mat-card-header>
-
-            <mat-card-content formArrayName="lista">
-                <ul>
-                    @for (s of listaSkill(idx).controls; track s; let idx2 =
-                    $index) {
-                    <li>
-                        <mat-form-field appearance="outline">
-                            <input
-                                matInput
-                                type="text"
-                                [formControlName]="idx2"
-                            />
-                            <mat-error>Campo obbligatorio</mat-error>
-                        </mat-form-field>
-
-                        <button
-                            type="button"
-                            mat-fab
-                            (click)="removeSubFields(idx, idx2)"
-                        >
-                            <mat-icon>delete</mat-icon>
-                        </button>
-                    </li>
-                    }
-                </ul>
+                </span>
+                <mat-divider [vertical]="true"></mat-divider>
+                }
 
                 <button
                     type="button"
-                    mat-fab
-                    extended
+                    class="btn btn-primary"
                     (click)="addSubFields(idx)"
                 >
                     <mat-icon>add</mat-icon>
-                    Aggiungi Skill
                 </button>
-            </mat-card-content>
-        </mat-card>
-        }
+            </div>
+        </div>
 
-        <button type="button" mat-fab extended (click)="addFields()">
+        @if (!$last) {
+        <mat-divider></mat-divider>
+        } }
+
+        <button type="button" class="btn btn-primary" (click)="addFields()">
             <mat-icon>add</mat-icon>
             Aggiungi Categoria
         </button>
-    </div>
+    </fieldset>
 </ng-container>

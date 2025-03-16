@@ -1,0 +1,18 @@
+<div class="container">
+    <div class="dialog-title-container">
+        <h2>{{ data.title }}</h2>
+    </div>
+    <div class="dialog-body-container">
+        @if(data.message) {
+        <div class="dialog-row">
+            {{ data.message }}
+        </div>
+        }
+        <div class="dialog-row">
+            <button class="btn btn-primary" (click)="onConfirm()">
+                Conferma
+            </button>
+            <button class="btn" (click)="closeDialog()">Annulla</button>
+        </div>
+    </div>
+</div>

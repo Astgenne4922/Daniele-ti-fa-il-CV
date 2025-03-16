@@ -14,12 +14,12 @@ export class CurriculumService {
         return this.httpClient.get<Curriculum[]>(`${baseURL}/get/all`);
     }
 
-    getById(id: string) {
+    getById() {
         return this.httpClient.get<Curriculum>(`${baseURL}/get`);
     }
-    getByIdPDF(id: string, isAnon = false) {
+    getByIdPDF() {
         return this.httpClient.get(
-            `${baseURL}/get?generatePDF=true&isAnon=${isAnon}`,
+            `${baseURL}/get?generatePDF=true`,
             {
                 headers: new HttpHeaders({
                     Accept: 'application/pdf',
@@ -30,12 +30,12 @@ export class CurriculumService {
         );
     }
 
-    getByNominativo(nome: string, cognome: string) {
+    getByNominativo() {
         return this.httpClient.get<Curriculum>(`${baseURL}/get`);
     }
-    getByNominativoPDF(nome: string, cognome: string, isAnon = false) {
+    getByNominativoPDF() {
         return this.httpClient.get(
-            `${baseURL}/get?generatePDF=true&isAnon=${isAnon}`,
+            `${baseURL}/get?generatePDF=true`,
             {
                 headers: new HttpHeaders({
                     Accept: 'application/pdf',
@@ -46,9 +46,9 @@ export class CurriculumService {
         );
     }
 
-    generatePDF(cv: Curriculum, isAnon = false) {
+    generatePDF(cv: Curriculum) {
         return this.httpClient.post(
-            `${baseURL}/generatePDF?isAnon=${isAnon}`,
+            `${baseURL}/generatePDF`,
             cv,
             { responseType: 'blob' }
         );
@@ -59,7 +59,7 @@ export class CurriculumService {
         });
     }
 
-    update(id: string, newCv: Curriculum) {
+    update(newCv: Curriculum) {
         return this.httpClient.put(`${baseURL}/update`, newCv, {
             responseType: 'text',
         });

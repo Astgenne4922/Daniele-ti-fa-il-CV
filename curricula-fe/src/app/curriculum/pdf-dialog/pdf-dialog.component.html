@@ -1,9 +1,9 @@
-<h2 mat-dialog-title>Anteprima</h2>
+<div class="container">
+    <div class="dialog-title-container">
+        <h2>Anteprima</h2>
+    </div>
 
-<mat-dialog-content open>
-    <pdf-viewer
-        [src]="data.url"
-        [fit-to-page]="true"
-        [zoom-scale]="'page-width'"
-    />
-</mat-dialog-content>
+    <div class="dialog-body-container">
+        <pdf-viewer [src]="data.url" [original-size]="true" [fit-to-page]="true" [zoom-scale]="'page-width'" />
+    </div>
+</div>

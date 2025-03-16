@@ -11,19 +11,21 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { Skill } from '../curriculum.model';
 
 @Component({
     selector: 'app-skills-form-fields',
     templateUrl: './skills-form-fields.component.html',
-    styleUrls: ['./skills-form-fields.component.css'],
+    styleUrls: ['./skills-form-fields.component.scss'],
     imports: [
         ReactiveFormsModule,
         MatButtonModule,
         MatFormFieldModule,
         MatInputModule,
         MatIconModule,
+        MatDividerModule,
         MatCardModule,
     ],
 })

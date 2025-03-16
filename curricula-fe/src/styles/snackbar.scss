@@ -1,0 +1,30 @@
+@use 'variables' as var;
+
+.success-snackbar {
+    margin-top: 130px !important;
+    margin-right: 20px !important;
+
+    * {
+        font-weight: 500 !important;
+    }
+
+    div {
+        background: var.$app-bootstrap-green !important;
+        border-radius: 4px;
+    }
+}
+
+
+.error-snackbar {
+    margin-top: 130px !important;
+    margin-right: 20px !important;
+
+    * {
+        font-weight: 500 !important;
+    }
+
+    div {
+        background: var.$app-bootstrap-red !important;
+        border-radius: 4px;
+    }
+}

@@ -1,0 +1,45 @@
+@use 'variables' as var;
+
+input {
+    line-height: 1.5;
+    color: var.$app-dark-grey-lines;
+    font-size: 14px;
+    padding: 0.1875rem 0.625rem;
+    border: 1px solid var.$app-grey-border;
+    border-radius: 4px;
+    background-color: var.$app-white;
+    //height: 28px;
+}
+
+input:not([type='checkbox']),
+input:not([type='radio']) {
+    &:disabled {
+        opacity: 0.5;
+    }
+}
+
+input[type='date'] {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    height: 20px;
+}
+
+input[type='checkbox'],
+input[type='radio'] {
+    opacity: 0 !important;
+}
+
+input::placeholder {
+    color: var.$app-medium-grey-border;
+}
+
+.leave-planner-user-filter-select-input {
+    width: 93%;
+    border: 1px solid transparent;
+    outline: none;
+    overflow: hidden;
+
+    &:focus {
+        outline: none;
+    }
+}

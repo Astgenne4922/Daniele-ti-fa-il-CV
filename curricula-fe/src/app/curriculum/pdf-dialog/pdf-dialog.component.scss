@@ -1,0 +1,24 @@
+@use "../../../styles/variables" as var;
+
+.container {
+    height: 90vh;
+
+    .dialog-body-container {
+        background-color: #f0f0f0;
+        border-top: 1px solid var.$app-grey-border;
+        border-bottom: 1px solid var.$app-grey-border;
+        padding: 5px;
+        display: flex;
+        // height: 80vh;
+        overflow: hidden;
+        justify-content: center;
+    }
+
+    overflow: hidden;
+}
+
+pdf-viewer {
+    width: 500px;
+    height: 80vh;
+    max-width: 500px;
+}

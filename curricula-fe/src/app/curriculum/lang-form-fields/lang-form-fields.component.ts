@@ -10,6 +10,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Lingue } from '../curriculum.model';
@@ -17,7 +18,7 @@ import { Lingue } from '../curriculum.model';
 @Component({
     selector: 'app-lang-form-fields',
     templateUrl: './lang-form-fields.component.html',
-    styleUrls: ['./lang-form-fields.component.css'],
+    styleUrls: ['./lang-form-fields.component.scss'],
     imports: [
         ReactiveFormsModule,
         MatButtonModule,
@@ -25,6 +26,7 @@ import { Lingue } from '../curriculum.model';
         MatInputModule,
         MatIconModule,
         MatCardModule,
+        MatDividerModule,
     ],
 })
 export class LangFormFieldsComponent implements OnInit, OnChanges {

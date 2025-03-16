@@ -18,7 +18,7 @@ import { Esperienze } from '../curriculum.model';
 @Component({
     selector: 'app-work-form-fields',
     templateUrl: './work-form-fields.component.html',
-    styleUrls: ['./work-form-fields.component.css'],
+    styleUrls: ['./work-form-fields.component.scss'],
     imports: [
         ReactiveFormsModule,
         MatButtonModule,

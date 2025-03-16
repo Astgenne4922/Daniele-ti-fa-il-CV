@@ -1,36 +1,53 @@
-@use "@angular/material" as mat;
+@use 'styles/variables' as var;
+@use '@angular/material' as mat;
 
-html {
-    color-scheme: light;
-    @include mat.theme(
-        (
-            color: mat.$green-palette,
-            typography: Roboto,
-            density: 0,
-        )
-    );
+@include mat.core();
+
+$WebApp2-primary: mat.m2-define-palette(var.$app-orange-palette);
+$WebApp2-accent: mat.m2-define-palette(mat.$m2-pink-palette, A200, A100, A400);
+
+$WebApp2-warn: mat.m2-define-palette(mat.$m2-red-palette);
+
+$WebApp2-theme: mat.m2-define-light-theme((color: (primary: $WebApp2-primary,
+                accent: $WebApp2-accent,
+                warn: $WebApp2-warn,
+            )));
+
+@include mat.all-component-themes($WebApp2-theme);
+
+@import 'styles/button.scss';
+@import 'styles/dialog.scss';
+@import 'styles/input.scss';
+@import 'styles/select';
+@import 'styles/snackbar.scss';
+@import 'styles/text-area.scss';
+
+.spinner_overlay {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #00000043;
+    z-index: 1000;
 }
 
-* {
-    box-sizing: border-box;
+mat-spinner {
+    position: absolute !important;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
 }
 
 html,
 body {
     height: 100%;
+    background-color: #f0f0f0;
 }
 
 body {
     margin: 0;
-    padding: 10px;
     font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-
-mat-form-field {
-    margin: 0 10px;
-}
-
-.mdc-fab {
-    margin: 0 10px;
-    vertical-align: middle;
 }

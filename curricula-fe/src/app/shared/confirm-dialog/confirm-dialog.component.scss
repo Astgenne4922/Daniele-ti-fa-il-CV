@@ -1,0 +1,30 @@
+@use '../../../styles/variables' as var;
+
+.dialog-title-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.dialog-body-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .dialog-row {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 10px 0 10px;
+
+        .btn-primary {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .btn:not(.btn-primary) {
+            margin-left: 10px;
+        }
+    }
+}

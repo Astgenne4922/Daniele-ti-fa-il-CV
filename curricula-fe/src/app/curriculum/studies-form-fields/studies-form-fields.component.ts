@@ -18,7 +18,7 @@ import { Studi } from '../curriculum.model';
 @Component({
     selector: 'app-studies-form-fields',
     templateUrl: './studies-form-fields.component.html',
-    styleUrls: ['./studies-form-fields.component.css'],
+    styleUrls: ['./studies-form-fields.component.scss'],
     imports: [
         ReactiveFormsModule,
         MatButtonModule,

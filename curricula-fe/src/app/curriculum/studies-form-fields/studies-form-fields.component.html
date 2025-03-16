@@ -1,79 +1,64 @@
 <ng-container [formGroup]="form">
-    <div formArrayName="studi">
+    <fieldset formArrayName="studi">
+        <legend>Studi</legend>
         @for (studio of formArray.controls; track studio; let idx = $index) {
-        <div class="flex" [formGroupName]="idx">
-            <button type="button" mat-fab (click)="removeFields(idx)">
+        <div [formGroupName]="idx">
+            <button
+                type="button"
+                class="btn btn-primary"
+                (click)="removeFields(idx)"
+            >
                 <mat-icon>delete</mat-icon>
             </button>
 
-            <div class="fields">
-                <span>
-                    <mat-form-field appearance="outline">
-                        <mat-label>Titolo</mat-label>
-                        <input matInput type="text" formControlName="titolo" />
-                        <mat-error>Campo obbligatorio</mat-error>
-                    </mat-form-field>
+            <mat-form-field
+                class="text"
+                floatLabel="always"
+                appearance="outline"
+            >
+                <mat-label>Titolo</mat-label>
+                <input matInput type="text" formControlName="titolo" />
+                <mat-error>Campo obbligatorio</mat-error>
+            </mat-form-field>
 
-                    <mat-form-field appearance="outline">
-                        <mat-label>Istituto</mat-label>
-                        <input
-                            matInput
-                            type="text"
-                            formControlName="istituto"
-                        />
-                        <mat-error>Campo obbligatorio</mat-error>
-                    </mat-form-field>
-                </span>
+            <mat-form-field
+                class="text"
+                floatLabel="always"
+                appearance="outline"
+            >
+                <mat-label>Istituto</mat-label>
+                <input matInput type="text" formControlName="istituto" />
+                <mat-error>Campo obbligatorio</mat-error>
+            </mat-form-field>
 
-                <span>
-                    <mat-form-field appearance="outline">
-                        <mat-label>Data Inizio</mat-label>
-                        <input
-                            matInput
-                            placeholder="GG/MM/AAAA"
-                            [matDatepicker]="dataInizio"
-                            formControlName="dataInizio"
-                        />
-                        <mat-datepicker-toggle
-                            matIconSuffix
-                            [for]="dataInizio"
-                        ></mat-datepicker-toggle>
-                        <mat-datepicker #dataInizio></mat-datepicker>
-                        @if
-                        (formArray.controls.at(idx)?.get('dataInizio')?.hasError('matDatepickerParse'))
-                        {
-                        <mat-error>Data non valida</mat-error>
-                        } @else {
-                        <mat-error>Campo obbligatorio</mat-error>
-                        }
-                    </mat-form-field>
+            <mat-form-field floatLabel="always" appearance="outline">
+                <mat-label>Data Inizio</mat-label>
+                <input matInput type="month" formControlName="dataInizio" />
+                @if
+                (formArray.controls.at(idx)?.get('dataInizio')?.hasError('matDatepickerParse'))
+                {
+                <mat-error>Data non valida</mat-error>
+                } @else {
+                <mat-error>Campo obbligatorio</mat-error>
+                }
+            </mat-form-field>
 
-                    <mat-form-field appearance="outline">
-                        <mat-label>Data Fine</mat-label>
-                        <input
-                            matInput
-                            placeholder="GG/MM/AAAA"
-                            [matDatepicker]="dataFine"
-                            formControlName="dataFine"
-                        />
-                        <mat-datepicker-toggle
-                            matIconSuffix
-                            [for]="dataFine"
-                        ></mat-datepicker-toggle>
-                        <mat-datepicker #dataFine></mat-datepicker>
-                        <mat-error>Data non valida</mat-error>
-                    </mat-form-field>
-                </span>
-            </div>
+            <mat-form-field floatLabel="always" appearance="outline">
+                <mat-label>Data Fine</mat-label>
+                <input matInput type="month" formControlName="dataFine" />
+                <mat-error>Data non valida</mat-error>
+            </mat-form-field>
 
-            <mat-form-field class="textarea" appearance="outline">
+            <mat-form-field
+                class="textarea"
+                floatLabel="always"
+                appearance="outline"
+            >
                 <mat-label>Dettagli</mat-label>
                 <textarea
                     matInput
                     cdkTextareaAutosize
                     cdkAutosizeMaxRows="6"
-                    cdkAutosizeMinRows="6"
-                    type="text"
                     formControlName="dettagli"
                 ></textarea>
             </mat-form-field>
@@ -81,11 +66,11 @@
 
         @if (!$last) {
         <mat-divider></mat-divider>
-        }}
+        } }
 
-        <button type="button" mat-fab extended (click)="addFields()">
+        <button type="button" class="btn btn-primary" (click)="addFields()">
             <mat-icon>add</mat-icon>
             Aggiungi
         </button>
-    </div>
+    </fieldset>
 </ng-container>

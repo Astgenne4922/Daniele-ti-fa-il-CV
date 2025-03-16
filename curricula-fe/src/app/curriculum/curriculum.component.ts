@@ -1,10 +1,3 @@
-import {
-    animate,
-    keyframes,
-    style,
-    transition,
-    trigger,
-} from '@angular/animations';
 import { formatDate } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -16,7 +9,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { finalize, map } from 'rxjs';
-import { AdminDialogComponent } from './admin-dialog/admin-dialog.component';
+import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
+import { SnackbarService } from '../shared/snackbar.service';
 import {
     Curriculum,
     Esperienze,
@@ -30,48 +24,6 @@ import { PdfDialogComponent } from './pdf-dialog/pdf-dialog.component';
 import { SkillsFormFieldsComponent } from './skills-form-fields/skills-form-fields.component';
 import { StudiesFormFieldsComponent } from './studies-form-fields/studies-form-fields.component';
 import { WorkFormFieldsComponent } from './work-form-fields/work-form-fields.component';
-
-export const shake = animate(
-    '1000ms ease-in',
-    keyframes([
-        style({
-            transform: 'translate3d(-1px, 0, 0)',
-            offset: 0.1,
-        }),
-        style({
-            transform: 'translate3d(2px, 0, 0)',
-            offset: 0.2,
-        }),
-        style({
-            transform: 'translate3d(-4px, 0, 0)',
-            offset: 0.3,
-        }),
-        style({
-            transform: 'translate3d(4px, 0, 0)',
-            offset: 0.4,
-        }),
-        style({
-            transform: 'translate3d(-4px, 0, 0)',
-            offset: 0.5,
-        }),
-        style({
-            transform: 'translate3d(4px, 0, 0)',
-            offset: 0.6,
-        }),
-        style({
-            transform: 'translate3d(-4px, 0, 0)',
-            offset: 0.7,
-        }),
-        style({
-            transform: 'translate3d(2px, 0, 0)',
-            offset: 0.8,
-        }),
-        style({
-            transform: 'translate3d(-1px, 0, 0)',
-            offset: 0.9,
-        }),
-    ])
-);
 
 @Component({
     selector: 'app-curriculum',
@@ -89,24 +41,18 @@ export const shake = animate(
         MatProgressSpinnerModule,
         MatIconModule,
     ],
-    animations: [
-        trigger('error', [
-            transition('good => submit', shake),
-            transition('good => preview', shake),
-        ]),
-    ],
     templateUrl: './curriculum.component.html',
-    styleUrl: './curriculum.component.css',
+    styleUrl: './curriculum.component.scss',
 })
 export class CurriculumComponent implements OnInit {
     private readonly NOME = 'Daniele';
     private readonly COGNOME = 'Candido';
-    readonly isAdmin = false;
 
     private fb = inject(FormBuilder);
     private cvService = inject(CurriculumService);
     private destroyRef = inject(DestroyRef);
     private dialog = inject(MatDialog);
+    private snackBar = inject(SnackbarService);
 
     form = this.fb.group({
         telefono: [
@@ -136,12 +82,10 @@ export class CurriculumComponent implements OnInit {
     loadedCurriculum?: Curriculum;
 
     isLoading = signal(true);
-    isErrorSubmit = signal<'submit' | 'good'>('good');
-    isErrorPreview = signal<'preview' | 'good'>('good');
 
     ngOnInit() {
         const subscription = this.cvService
-            .getByNominativo(this.NOME, this.COGNOME)
+            .getByNominativo()
             .pipe(
                 map((val) => {
                     val.esperienze = val.esperienze?.map((e) => {
@@ -158,7 +102,7 @@ export class CurriculumComponent implements OnInit {
                 finalize(() => this.isLoading.set(false))
             )
             .subscribe({
-                error: (err) => alert(err.error),
+                error: (_) => this.snackBar.error('Nessun Curriculum in memoria'),
                 next: (res) => {
                     this.form.patchValue({
                         telefono: res.telefono,
@@ -182,37 +126,25 @@ export class CurriculumComponent implements OnInit {
     onSubmit() {
         this.form.markAllAsTouched();
 
-        if (this.form.invalid) {
-            this.isErrorSubmit.set('submit');
-            return;
-        }
-
         const subscription = this.saveOrCreate().subscribe({
-            error: (err) => console.log(err.error),
-            next: (res) => alert(res),
+            error: (_) => this.snackBar.error('Impossibile salvare'),
+            next: (_) => this.snackBar.success('Salvataggio Effettuato'),
         });
         this.destroyRef.onDestroy(() => subscription.unsubscribe());
     }
 
-    openPreviewDialog(isAnon = false) {
+    openPreviewDialog() {
         this.form.markAllAsTouched();
-
-        if (this.form.invalid) {
-            this.isErrorPreview.set('preview');
-            return;
-        }
 
         this.isLoading.set(true);
 
         const subscription = this.cvService
-            .generatePDF(this.adaptFormValue(), isAnon)
+            .generatePDF(this.adaptFormValue())
             .pipe(finalize(() => this.isLoading.set(false)))
             .subscribe({
-                error: (err) => console.log(err.error),
+                error: (_) => this.snackBar.error("Impossibile visualizzare l'anteprima"),
                 next: (res) => {
                     this.dialog.open(PdfDialogComponent, {
-                        height: '90%',
-                        width: '60%',
                         data: {
                             url: window.URL.createObjectURL(res),
                         },
@@ -222,65 +154,64 @@ export class CurriculumComponent implements OnInit {
         this.destroyRef.onDestroy(() => subscription.unsubscribe());
     }
 
-    onDownload(isAnon = false) {
-        if (!confirm('Salvare?')) return;
-
-        this.form.markAllAsTouched();
-
-        if (this.form.invalid) {
-            return;
-        }
-
-        const subscription = this.saveOrCreate().subscribe({
-            error: (err) => console.log(err.error),
-            next: (_) => {
-                const subscription = this.cvService
-                    .generatePDF(this.adaptFormValue(), isAnon)
-                    .subscribe({
-                        error: (err) => console.log(err.error),
-                        next: (res) => {
-                            const url = window.URL.createObjectURL(res);
-                            var link = document.createElement('a');
-                            link.href = url;
-                            link.download = `${this.NOME}_${this.COGNOME}${
-                                isAnon ? '_Anon' : ''
-                            }_cv.pdf`;
-                            link.click();
-                        },
-                    });
-                this.destroyRef.onDestroy(() => subscription.unsubscribe());
+    onDownload() {
+        const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+            width: '200px',
+            disableClose: true,
+            data: {
+                title: `Salvare?`,
             },
         });
-        this.destroyRef.onDestroy(() => subscription.unsubscribe());
-    }
 
-    openAdminDialog() {
-        this.isLoading.set(true);
+        confirmDialog.afterClosed().subscribe((result) => {
+            if (!result) {
+                return;
+            }
+            this.form.markAllAsTouched();
 
-        const subscription = this.cvService
-            .getAll()
-            .pipe(finalize(() => this.isLoading.set(false)))
-            .subscribe({
-                error: (err) => console.log(err.error),
-                next: (res) => {
-                    this.dialog.open(AdminDialogComponent, {
-                        maxHeight: '90%',
-                        maxWidth: 'none',
-                        data: res,
-                    });
-                },
-            });
-        this.destroyRef.onDestroy(() => subscription.unsubscribe());
+            if (this.form.invalid) {
+                return;
+            }
+
+            this.isLoading.set(true);
+
+            const subscription = this.saveOrCreate()
+                .pipe(
+                    finalize(() => this.isLoading.set(false))
+                )
+                .subscribe({
+                    error: (_) => this.snackBar.error('Impossibile salvare'),
+                    next: (_) => {
+                        const subscription = this.cvService
+                            .generatePDF(this.adaptFormValue())
+                            .pipe(finalize(() => this.isLoading.set(false)))
+                            .subscribe({
+                                error: (_) =>
+                                    this.snackBar.error('Errore nella generazione del PDF'),
+                                next: (res) => {
+                                    const url = window.URL.createObjectURL(res);
+                                    var link = document.createElement('a');
+                                    link.href = url;
+                                    link.download = `${this.NOME}_${this.COGNOME}$_cv.pdf`;
+                                    link.click();
+                                },
+                            });
+                        this.destroyRef.onDestroy(() =>
+                            subscription.unsubscribe()
+                        );
+                    },
+                });
+            this.destroyRef.onDestroy(() => subscription.unsubscribe());
+        });
     }
 
     private saveOrCreate() {
         const value = this.adaptFormValue();
 
-        if (this.id) {
-            return this.cvService.update(this.id, value);
-        } else {
+        if (this.id)
+            return this.cvService.update(value);
+        else
             return this.cvService.create(value);
-        }
     }
 
     private adaptFormValue() {
