@@ -1,24 +1,25 @@
-@use "../../../styles/variables" as var;
+@use "@angular/material" as mat;
 
 .container {
     height: 90vh;
 
-    .dialog-body-container {
-        background-color: #f0f0f0;
-        border-top: 1px solid var.$app-grey-border;
-        border-bottom: 1px solid var.$app-grey-border;
-        padding: 5px;
+    overflow: hidden;
+
+    .dialog-title-container {
         display: flex;
-        // height: 80vh;
-        overflow: hidden;
         justify-content: center;
     }
 
-    overflow: hidden;
+    .dialog-body-container {
+        background-color: var(--mat-sys-surface);
+        border-top: 1px solid var(--mat-sys-outline);
+        border-bottom: 1px solid var(--mat-sys-outline);
+        padding: 10px 0 5px 5px;
+    }
 }
 
 pdf-viewer {
-    width: 500px;
+    min-width: 400px;
     height: 80vh;
     max-width: 500px;
 }

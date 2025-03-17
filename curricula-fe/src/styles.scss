@@ -1,53 +1,26 @@
-@use 'styles/variables' as var;
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 
-@include mat.core();
+@use "styles/button";
+@use "styles/dialog";
+@use "styles/divider";
+@use "styles/fieldset";
+@use "styles/snackbar";
+@use "styles/theme" as theme;
 
-$WebApp2-primary: mat.m2-define-palette(var.$app-orange-palette);
-$WebApp2-accent: mat.m2-define-palette(mat.$m2-pink-palette, A200, A100, A400);
+html {
+    color-scheme: light;
 
-$WebApp2-warn: mat.m2-define-palette(mat.$m2-red-palette);
-
-$WebApp2-theme: mat.m2-define-light-theme((color: (primary: $WebApp2-primary,
-                accent: $WebApp2-accent,
-                warn: $WebApp2-warn,
-            )));
-
-@include mat.all-component-themes($WebApp2-theme);
-
-@import 'styles/button.scss';
-@import 'styles/dialog.scss';
-@import 'styles/input.scss';
-@import 'styles/select';
-@import 'styles/snackbar.scss';
-@import 'styles/text-area.scss';
-
-.spinner_overlay {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
     height: 100%;
-    background-color: #00000043;
-    z-index: 1000;
-}
+    background-color: var(--mat-sys-background);
 
-mat-spinner {
-    position: absolute !important;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
-}
-
-html,
-body {
-    height: 100%;
-    background-color: #f0f0f0;
+    @include mat.theme(
+        (
+            color: theme.$primary-palette,
+            typography: Roboto,
+        )
+    );
 }
 
 body {
-    margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font: var(--mat-sys-body-medium);
 }

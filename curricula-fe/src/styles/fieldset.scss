@@ -1,0 +1,57 @@
+@use "@angular/material" as mat;
+
+fieldset {
+    margin-bottom: 10px;
+    padding: 10px;
+
+    border: 1px solid var(--mat-sys-primary);
+    border-radius: 4px;
+
+    background-color: var(--mat-sys-surface-container-lowest);
+
+    legend {
+        padding: 10px;
+        font-weight: bold;
+    }
+
+    > div:not(:first-of-type) {
+        margin-top: 20px;
+    }
+
+    mat-form-field {
+        margin: 0 10px;
+    }
+
+    .mdc-text-field__input::-webkit-calendar-picker-indicator {
+        display: block;
+    }
+
+    button {
+        display: inline-flex;
+        margin-left: 10px;
+
+        &:last-child {
+            margin-bottom: 10px;
+        }
+    }
+
+    @include mat.form-field-overrides(
+        (
+            container-vertical-padding: 9px,
+            container-height: 20px,
+        )
+    );
+
+    @include mat.fab-overrides(
+        (
+            small-container-elevation-shadow: var(--mat-sys-level1),
+            small-focus-container-elevation-shadow: var(--mat-sys-level1),
+            small-hover-container-elevation-shadow: var(--mat-sys-level1),
+            small-pressed-container-elevation-shadow: var(--mat-sys-level1),
+            extended-container-elevation-shadow: var(--mat-sys-level1),
+            extended-focus-container-elevation-shadow: var(--mat-sys-level1),
+            extended-hover-container-elevation-shadow: var(--mat-sys-level1),
+            extended-pressed-container-elevation-shadow: var(--mat-sys-level1),
+        )
+    );
+}

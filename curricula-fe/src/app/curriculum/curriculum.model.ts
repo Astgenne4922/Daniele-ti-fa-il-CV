@@ -1,24 +1,22 @@
 export interface Curriculum {
-    id?: string;
     nome: string;
     cognome: string;
     indirizzo: string;
     telefono: string;
     email: string;
     website?: string;
-    dataModifica?: string;
     esperienze?: {
         posizione: string;
         azienda: string;
-        dataInizio: string | Date;
-        dataFine?: string | Date;
+        dataInizio: string;
+        dataFine?: string;
         dettagli?: string;
     }[];
     studi?: {
         titolo: string;
         istituto: string;
-        dataInizio: string | Date;
-        dataFine?: string | Date;
+        dataInizio: string;
+        dataFine?: string;
         dettagli?: string;
     }[];
     lingue?: {

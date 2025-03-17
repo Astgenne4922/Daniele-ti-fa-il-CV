@@ -9,7 +9,10 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import {
+    MAT_FORM_FIELD_DEFAULT_OPTIONS,
+    MatFormFieldModule,
+} from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
@@ -27,6 +30,12 @@ import { Skill } from '../curriculum.model';
         MatIconModule,
         MatDividerModule,
         MatCardModule,
+    ],
+    providers: [
+        {
+            provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+            useValue: { floatLabel: 'always', appearance: 'outline' },
+        },
     ],
 })
 export class SkillsFormFieldsComponent implements OnInit, OnChanges {

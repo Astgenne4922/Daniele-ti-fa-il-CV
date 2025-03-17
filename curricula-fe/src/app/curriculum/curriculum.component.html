@@ -8,9 +8,26 @@
     <fieldset>
         <legend>Anagrafica</legend>
 
-        <mat-form-field floatLabel="always" appearance="outline">
+        <mat-form-field>
+            <mat-label>Nome</mat-label>
+            <input matInput type="text" formControlName="nome" />
+            <mat-error>Campo obbligatorio</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Cognome</mat-label>
+            <input matInput type="text" formControlName="cognome" />
+            <mat-error>Campo obbligatorio</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
             <mat-label>Telefono</mat-label>
-            <input matInput type="tel" placeholder="+39 123 456 7890" formControlName="telefono" />
+            <input
+                matInput
+                type="tel"
+                placeholder="+39 123 456 7890"
+                formControlName="telefono"
+            />
             @if (form.controls.telefono.hasError('required')) {
             <mat-error>Campo obbligatorio</mat-error>
             } @else {
@@ -18,7 +35,7 @@
             }
         </mat-form-field>
 
-        <mat-form-field floatLabel="always" appearance="outline">
+        <mat-form-field>
             <mat-label>Email</mat-label>
             <input matInput type="email" formControlName="email" />
             @if (form.controls.email.hasError('required')) {
@@ -28,13 +45,13 @@
             }
         </mat-form-field>
 
-        <mat-form-field floatLabel="always" appearance="outline">
+        <mat-form-field>
             <mat-label>Indirizzo</mat-label>
             <input matInput type="text" formControlName="indirizzo" />
             <mat-error>Campo obbligatorio</mat-error>
         </mat-form-field>
 
-        <mat-form-field floatLabel="always" appearance="outline">
+        <mat-form-field>
             <mat-label>Sito</mat-label>
             <input matInput type="text" formControlName="sito" />
         </mat-form-field>
@@ -49,17 +66,15 @@
     <app-skills-form-fields [preload]="skill()" formArrayName="skill" />
 
     <div class="float-button">
-        <button class="btn btn-primary" type="submit">
+        <button mat-fab extended type="submit">
             <mat-icon>save</mat-icon>
             Salva
         </button>
-
-        <button class="btn btn-primary" type="button" (click)="openPreviewDialog()">
+        <button mat-fab extended type="button" (click)="openPreviewDialog()">
             <mat-icon>preview</mat-icon>
             Anteprima
         </button>
-
-        <button class="btn btn-primary" type="button" (click)="onDownload()">
+        <button mat-fab extended type="button" (click)="onDownload()">
             <mat-icon>download</mat-icon>
             Scarica
         </button>

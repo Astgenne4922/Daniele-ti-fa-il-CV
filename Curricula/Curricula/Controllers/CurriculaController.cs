@@ -9,12 +9,13 @@ namespace Curricula.Controllers
     [Route("api/[controller]")]
     public class CurriculaController : ControllerBase
     {
+        private readonly string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), ".curriculum_json_daniele");
         private readonly string json = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), ".curriculum_json_daniele", "curriculum.json");
 
         public CurriculaController() { }
 
-        [HttpGet("get")]
-        public IActionResult GetCurriculum([FromQuery] bool generatePDF = false, [FromQuery] bool isAnon = false)
+        [HttpGet]
+        public IActionResult GetCurriculum([FromQuery] bool generatePDF = false)
         {
             try
             {
@@ -24,7 +25,7 @@ namespace Curricula.Controllers
                 if (!generatePDF)
                     return Ok(cv);
                 else
-                    return GeneratePDF(cv, isAnon);
+                    return GeneratePDF(cv);
             }
             catch (Exception)
             {
@@ -33,12 +34,12 @@ namespace Curricula.Controllers
         }
 
         [HttpPost("generatePDF")]
-        public IActionResult GeneratePDF([FromBody] Curriculum curriculum, bool isAnon = false)
+        public IActionResult GeneratePDF([FromBody] Curriculum curriculum)
         {
             try
             {
-                Response.Headers.Append("Content-Disposition", $"inline; filename={curriculum.Nome}_{curriculum.Cognome}{(isAnon ? "_Anonimo" : "")}_cv.pdf");
-                return File(PDFGenerator.JsonToPDF(curriculum, isAnon), "application/pdf");
+                Response.Headers.Append("Content-Disposition", $"inline; filename={curriculum.Nome}_{curriculum.Cognome}_cv.pdf");
+                return File(PDFGenerator.JsonToPDF(curriculum), "application/pdf");
             }
             catch (Exception ex)
             {
@@ -47,12 +48,12 @@ namespace Curricula.Controllers
             }
         }
 
-        [HttpPost("create")]
+        [HttpPost]
         public IActionResult CreateCurrculum([FromBody] Curriculum curriculum)
         {
             try
             {
-                Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), ".curriculum_json_daniele"));
+                Directory.CreateDirectory(folder);
 
                 using (StreamWriter outputFile = System.IO.File.CreateText(json))
                 {
@@ -60,24 +61,6 @@ namespace Curricula.Controllers
                 }
 
                 return Ok("Inserimento completato");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPut("update")]
-        public IActionResult UpdateCurriculum([FromBody] Curriculum curriculum)
-        {
-            try
-            {
-                using (StreamWriter outputFile = new(json))
-                {
-                    outputFile.WriteLine(JsonConvert.SerializeObject(curriculum));
-                }
-
-                return Ok("Aggiornamento effettuato");
             }
             catch (Exception ex)
             {

@@ -10,57 +10,28 @@ const baseURL = 'http://localhost:5000/api/Curricula';
 export class CurriculumService {
     private httpClient = inject(HttpClient);
 
-    getAll() {
-        return this.httpClient.get<Curriculum[]>(`${baseURL}/get/all`);
+    get() {
+        return this.httpClient.get<Curriculum>(`${baseURL}`);
     }
 
-    getById() {
-        return this.httpClient.get<Curriculum>(`${baseURL}/get`);
-    }
-    getByIdPDF() {
-        return this.httpClient.get(
-            `${baseURL}/get?generatePDF=true`,
-            {
-                headers: new HttpHeaders({
-                    Accept: 'application/pdf',
-                    'Content-Type': 'application/pdf',
-                }),
-                responseType: 'blob',
-            }
-        );
-    }
-
-    getByNominativo() {
-        return this.httpClient.get<Curriculum>(`${baseURL}/get`);
-    }
-    getByNominativoPDF() {
-        return this.httpClient.get(
-            `${baseURL}/get?generatePDF=true`,
-            {
-                headers: new HttpHeaders({
-                    Accept: 'application/pdf',
-                    'Content-Type': 'application/pdf',
-                }),
-                responseType: 'blob',
-            }
-        );
-    }
-
-    generatePDF(cv: Curriculum) {
-        return this.httpClient.post(
-            `${baseURL}/generatePDF`,
-            cv,
-            { responseType: 'blob' }
-        );
-    }
-    create(cv: Curriculum) {
-        return this.httpClient.post(`${baseURL}/create`, cv, {
-            responseType: 'text',
+    getPDF() {
+        return this.httpClient.get(`${baseURL}?generatePDF=true`, {
+            headers: new HttpHeaders({
+                Accept: 'application/pdf',
+                'Content-Type': 'application/pdf',
+            }),
+            responseType: 'blob',
         });
     }
 
-    update(newCv: Curriculum) {
-        return this.httpClient.put(`${baseURL}/update`, newCv, {
+    generatePDF(cv: Curriculum) {
+        return this.httpClient.post(`${baseURL}/generatePDF`, cv, {
+            responseType: 'blob',
+        });
+    }
+
+    insert(cv: Curriculum) {
+        return this.httpClient.post(`${baseURL}`, cv, {
             responseType: 'text',
         });
     }

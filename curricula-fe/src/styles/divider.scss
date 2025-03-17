@@ -1,0 +1,7 @@
+@use "@angular/material" as mat;
+
+@include mat.divider-overrides(
+    (
+        color: var(--mat-sys-primary),
+    )
+);

@@ -3,33 +3,29 @@
         <legend>Lingue Parlate</legend>
         @for (lingua of formArray.controls; track lingua; let idx = $index) {
         <div [formGroupName]="idx">
-            <button
-                class="btn btn-primary"
-                type="button"
-                (click)="removeFields(idx)"
-            >
+            <button mat-mini-fab type="button" (click)="removeFields(idx)">
                 <mat-icon>delete</mat-icon>
             </button>
 
-            <mat-form-field floatLabel="always" appearance="outline">
+            <mat-form-field>
                 <mat-label>Lingua</mat-label>
                 <input matInput type="text" formControlName="lingua" />
                 <mat-error>Campo obbligatorio</mat-error>
             </mat-form-field>
 
-            <mat-form-field floatLabel="always" appearance="outline">
+            <mat-form-field>
                 <mat-label>Comprensione</mat-label>
                 <input matInput type="text" formControlName="comprensione" />
                 <mat-error>Campo obbligatorio</mat-error>
             </mat-form-field>
 
-            <mat-form-field floatLabel="always" appearance="outline">
+            <mat-form-field>
                 <mat-label>Parlato</mat-label>
                 <input matInput type="text" formControlName="parlato" />
                 <mat-error>Campo obbligatorio</mat-error>
             </mat-form-field>
 
-            <mat-form-field floatLabel="always" appearance="outline">
+            <mat-form-field>
                 <mat-label>Scritto</mat-label>
                 <input matInput type="text" formControlName="scritto" />
                 <mat-error>Campo obbligatorio</mat-error>
@@ -40,7 +36,7 @@
         <mat-divider></mat-divider>
         } }
 
-        <button class="btn btn-primary" type="button" (click)="addFields()">
+        <button mat-fab extended type="button" (click)="addFields()">
             <mat-icon>add</mat-icon>
             Aggiungi
         </button>

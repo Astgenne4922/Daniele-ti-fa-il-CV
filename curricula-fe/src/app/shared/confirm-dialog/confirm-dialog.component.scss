@@ -1,4 +1,4 @@
-@use '../../../styles/variables' as var;
+@use "@angular/material" as mat;
 
 .dialog-title-container {
     display: flex;
@@ -14,17 +14,14 @@
     .dialog-row {
         width: 100%;
         display: flex;
-        justify-content: center;
+        justify-content: space-evenly;
         align-items: center;
         margin: 10px 0 10px;
 
-        .btn-primary {
-            font-weight: bold;
-            margin-right: 10px;
-        }
-
-        .btn:not(.btn-primary) {
-            margin-left: 10px;
-        }
+        @include mat.button-overrides(
+            (
+                protected-container-shape: 10px,
+            )
+        );
     }
 }

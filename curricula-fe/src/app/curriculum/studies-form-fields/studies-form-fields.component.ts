@@ -10,7 +10,10 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import {
+    MAT_FORM_FIELD_DEFAULT_OPTIONS,
+    MatFormFieldModule,
+} from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Studi } from '../curriculum.model';
@@ -27,6 +30,12 @@ import { Studi } from '../curriculum.model';
         MatIconModule,
         MatDatepickerModule,
         MatDividerModule,
+    ],
+    providers: [
+        {
+            provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+            useValue: { floatLabel: 'always', appearance: 'outline' },
+        },
     ],
 })
 export class StudiesFormFieldsComponent implements OnInit, OnChanges {

@@ -1,41 +1,16 @@
-@use "../../../styles/variables" as var;
-
-mat-divider {
-    margin-bottom: 20px;
-    border-color: var.$app-color;
-}
-
 fieldset {
-    border: 1px solid var.$app-color;
-    border-radius: 4px;
-    padding: 10px;
-    margin-bottom: 10px;
+    > div {
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: row;
+        flex-wrap: wrap;
 
-    background-color: white;
+        mat-form-field {
+            flex-grow: 3;
 
-    legend {
-        padding: 10px;
-        font-weight: bold;
-    }
-
-    mat-form-field {
-        margin: 0 10px;
-        width: 20%;
-    }
-
-    ::ng-deep {
-
-        mat-form-field>div.mat-mdc-text-field-wrapper,
-        mat-form-field>div.mat-mdc-form-field-infix {
-            padding: 5px !important;
+            &:first-of-type {
+                flex-grow: 1;
+            }
         }
-    }
-
-    .btn {
-        display: inline-flex;
-        margin-left: 10px;
-        margin-bottom: 22px;
-        height: auto;
-        padding: 10px;
     }
 }

@@ -3,29 +3,17 @@
         <legend>Studi</legend>
         @for (studio of formArray.controls; track studio; let idx = $index) {
         <div [formGroupName]="idx">
-            <button
-                type="button"
-                class="btn btn-primary"
-                (click)="removeFields(idx)"
-            >
+            <button mat-mini-fab type="button" (click)="removeFields(idx)">
                 <mat-icon>delete</mat-icon>
             </button>
 
-            <mat-form-field
-                class="text"
-                floatLabel="always"
-                appearance="outline"
-            >
+            <mat-form-field>
                 <mat-label>Titolo</mat-label>
                 <input matInput type="text" formControlName="titolo" />
                 <mat-error>Campo obbligatorio</mat-error>
             </mat-form-field>
 
-            <mat-form-field
-                class="text"
-                floatLabel="always"
-                appearance="outline"
-            >
+            <mat-form-field>
                 <mat-label>Istituto</mat-label>
                 <input matInput type="text" formControlName="istituto" />
                 <mat-error>Campo obbligatorio</mat-error>
@@ -49,11 +37,7 @@
                 <mat-error>Data non valida</mat-error>
             </mat-form-field>
 
-            <mat-form-field
-                class="textarea"
-                floatLabel="always"
-                appearance="outline"
-            >
+            <mat-form-field>
                 <mat-label>Dettagli</mat-label>
                 <textarea
                     matInput
@@ -68,7 +52,7 @@
         <mat-divider></mat-divider>
         } }
 
-        <button type="button" class="btn btn-primary" (click)="addFields()">
+        <button mat-fab extended type="button" (click)="addFields()">
             <mat-icon>add</mat-icon>
             Aggiungi
         </button>

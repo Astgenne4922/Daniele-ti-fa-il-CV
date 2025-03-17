@@ -1,30 +1,19 @@
-@use 'variables' as var;
+@use "@angular/material" as mat;
 
 .success-snackbar {
-    margin-top: 130px !important;
-    margin-right: 20px !important;
-
-    * {
-        font-weight: 500 !important;
-    }
-
-    div {
-        background: var.$app-bootstrap-green !important;
-        border-radius: 4px;
-    }
+    @include mat.snack-bar-overrides(
+        (
+            container-color: var(--mat-sys-primary),
+            supporting-text-weight: 500,
+        )
+    );
 }
 
-
 .error-snackbar {
-    margin-top: 130px !important;
-    margin-right: 20px !important;
-
-    * {
-        font-weight: 500 !important;
-    }
-
-    div {
-        background: var.$app-bootstrap-red !important;
-        border-radius: 4px;
-    }
+    @include mat.snack-bar-overrides(
+        (
+            container-color: var(--mat-sys-error),
+            supporting-text-weight: 500,
+        )
+    );
 }

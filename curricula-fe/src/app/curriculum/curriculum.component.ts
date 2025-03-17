@@ -1,14 +1,15 @@
-import { formatDate } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import {
+    MAT_FORM_FIELD_DEFAULT_OPTIONS,
+    MatFormFieldModule,
+} from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { finalize, map } from 'rxjs';
+import { finalize } from 'rxjs';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
 import { SnackbarService } from '../shared/snackbar.service';
 import {
@@ -27,6 +28,8 @@ import { WorkFormFieldsComponent } from './work-form-fields/work-form-fields.com
 
 @Component({
     selector: 'app-curriculum',
+    templateUrl: './curriculum.component.html',
+    styleUrl: './curriculum.component.scss',
     imports: [
         ReactiveFormsModule,
         WorkFormFieldsComponent,
@@ -36,18 +39,18 @@ import { WorkFormFieldsComponent } from './work-form-fields/work-form-fields.com
         MatButtonModule,
         MatFormFieldModule,
         MatInputModule,
-        MatExpansionModule,
         MatDialogModule,
         MatProgressSpinnerModule,
         MatIconModule,
     ],
-    templateUrl: './curriculum.component.html',
-    styleUrl: './curriculum.component.scss',
+    providers: [
+        {
+            provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+            useValue: { floatLabel: 'always', appearance: 'outline' },
+        },
+    ],
 })
 export class CurriculumComponent implements OnInit {
-    private readonly NOME = 'Daniele';
-    private readonly COGNOME = 'Candido';
-
     private fb = inject(FormBuilder);
     private cvService = inject(CurriculumService);
     private destroyRef = inject(DestroyRef);
@@ -55,6 +58,8 @@ export class CurriculumComponent implements OnInit {
     private snackBar = inject(SnackbarService);
 
     form = this.fb.group({
+        nome: ['', Validators.required],
+        cognome: ['', Validators.required],
         telefono: [
             '',
             [
@@ -78,33 +83,21 @@ export class CurriculumComponent implements OnInit {
     lingue = signal<Lingue>(undefined);
     skill = signal<Skill>(undefined);
 
-    id?: string;
     loadedCurriculum?: Curriculum;
 
     isLoading = signal(true);
 
     ngOnInit() {
         const subscription = this.cvService
-            .getByNominativo()
-            .pipe(
-                map((val) => {
-                    val.esperienze = val.esperienze?.map((e) => {
-                        return {
-                            ...e,
-                            dataInizio: new Date(e.dataInizio),
-                            dataFine: e.dataFine
-                                ? new Date(e.dataFine)
-                                : undefined,
-                        };
-                    });
-                    return val;
-                }),
-                finalize(() => this.isLoading.set(false))
-            )
+            .get()
+            .pipe(finalize(() => this.isLoading.set(false)))
             .subscribe({
-                error: (_) => this.snackBar.error('Nessun Curriculum in memoria'),
+                error: (_) =>
+                    this.snackBar.error('Nessun Curriculum in memoria'),
                 next: (res) => {
                     this.form.patchValue({
+                        nome: res.nome,
+                        cognome: res.cognome,
                         telefono: res.telefono,
                         email: res.email,
                         indirizzo: res.indirizzo,
@@ -116,7 +109,6 @@ export class CurriculumComponent implements OnInit {
                     this.lingue.set(res.lingue);
                     this.skill.set(res.skill);
 
-                    this.id = res.id;
                     this.loadedCurriculum = res;
                 },
             });
@@ -126,7 +118,7 @@ export class CurriculumComponent implements OnInit {
     onSubmit() {
         this.form.markAllAsTouched();
 
-        const subscription = this.saveOrCreate().subscribe({
+        const subscription = this.insert().subscribe({
             error: (_) => this.snackBar.error('Impossibile salvare'),
             next: (_) => this.snackBar.success('Salvataggio Effettuato'),
         });
@@ -142,7 +134,8 @@ export class CurriculumComponent implements OnInit {
             .generatePDF(this.adaptFormValue())
             .pipe(finalize(() => this.isLoading.set(false)))
             .subscribe({
-                error: (_) => this.snackBar.error("Impossibile visualizzare l'anteprima"),
+                error: (_) =>
+                    this.snackBar.error("Impossibile visualizzare l'anteprima"),
                 next: (res) => {
                     this.dialog.open(PdfDialogComponent, {
                         data: {
@@ -175,24 +168,25 @@ export class CurriculumComponent implements OnInit {
 
             this.isLoading.set(true);
 
-            const subscription = this.saveOrCreate()
-                .pipe(
-                    finalize(() => this.isLoading.set(false))
-                )
+            const subscription = this.insert()
+                .pipe(finalize(() => this.isLoading.set(false)))
                 .subscribe({
                     error: (_) => this.snackBar.error('Impossibile salvare'),
                     next: (_) => {
+                        const cv = this.adaptFormValue();
                         const subscription = this.cvService
-                            .generatePDF(this.adaptFormValue())
+                            .generatePDF(cv)
                             .pipe(finalize(() => this.isLoading.set(false)))
                             .subscribe({
                                 error: (_) =>
-                                    this.snackBar.error('Errore nella generazione del PDF'),
+                                    this.snackBar.error(
+                                        'Errore nella generazione del PDF'
+                                    ),
                                 next: (res) => {
                                     const url = window.URL.createObjectURL(res);
                                     var link = document.createElement('a');
                                     link.href = url;
-                                    link.download = `${this.NOME}_${this.COGNOME}$_cv.pdf`;
+                                    link.download = `${cv.nome}_${cv.cognome}$_cv.pdf`;
                                     link.click();
                                 },
                             });
@@ -205,20 +199,16 @@ export class CurriculumComponent implements OnInit {
         });
     }
 
-    private saveOrCreate() {
+    private insert() {
         const value = this.adaptFormValue();
 
-        if (this.id)
-            return this.cvService.update(value);
-        else
-            return this.cvService.create(value);
+        return this.cvService.insert(value);
     }
 
     private adaptFormValue() {
         let value: Curriculum = {
-            id: this.id,
-            nome: this.NOME,
-            cognome: this.COGNOME,
+            nome: this.form.value.nome!,
+            cognome: this.form.value.cognome!,
             indirizzo: this.form.value.indirizzo!,
             telefono: this.form.value.telefono!,
             email: this.form.value.email!,
@@ -227,15 +217,15 @@ export class CurriculumComponent implements OnInit {
         if (this.form.value.sito) value.website = this.form.value.sito;
 
         if (this.form.value.esperienze) {
-            value.esperienze = (this.form.value.esperienze as Esperienze)
-                ?.sort(this.sortDates)
-                .map(this.mapDates<NonNullable<Esperienze>[0]>);
+            value.esperienze = (this.form.value.esperienze as Esperienze)?.sort(
+                this.sortDates
+            );
         }
 
         if (this.form.value.studi) {
-            value.studi = (this.form.value.studi as Studi)
-                ?.sort(this.sortDates)
-                .map(this.mapDates<NonNullable<Studi>[0]>);
+            value.studi = (this.form.value.studi as Studi)?.sort(
+                this.sortDates
+            );
         }
 
         if (this.form.value.lingue) {
@@ -271,28 +261,16 @@ export class CurriculumComponent implements OnInit {
         a: NonNullable<Studi | Esperienze>[0],
         b: NonNullable<Studi | Esperienze>[0]
     ) {
-        const ai =
-            typeof a.dataInizio === 'string'
-                ? new Date(a.dataInizio)
-                : (a.dataInizio as Date);
+        const ai = new Date(a.dataInizio);
         ai.setHours(0, 0, 0, 0);
 
-        const af =
-            typeof a.dataFine === 'string'
-                ? new Date(a.dataFine)
-                : (a.dataFine as Date | undefined);
+        const af = a.dataFine ? new Date(a.dataFine) : undefined;
         af?.setHours(0, 0, 0, 0);
 
-        const bi =
-            typeof b.dataInizio === 'string'
-                ? new Date(b.dataInizio)
-                : (b.dataInizio as Date);
+        const bi = new Date(b.dataInizio);
         bi.setHours(0, 0, 0, 0);
 
-        const bf =
-            typeof b.dataFine === 'string'
-                ? new Date(b.dataFine)
-                : (b.dataFine as Date | undefined);
+        const bf = b.dataFine ? new Date(b.dataFine) : undefined;
         bf?.setHours(0, 0, 0, 0);
 
         if (bi.getTime() - ai.getTime() === 0) {
@@ -304,17 +282,5 @@ export class CurriculumComponent implements OnInit {
         }
 
         return bi.getTime() - ai.getTime();
-    }
-
-    private mapDates<T>(e: NonNullable<Studi | Esperienze>[0]) {
-        return {
-            ...e,
-            dataInizio: e.dataInizio
-                ? formatDate(e.dataInizio, 'YYYY-MM-dd', 'it-IT')
-                : '',
-            dataFine: e.dataFine
-                ? formatDate(e.dataFine, 'YYYY-MM-dd', 'it-IT')
-                : undefined,
-        } as T;
     }
 }

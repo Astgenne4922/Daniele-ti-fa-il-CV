@@ -12,8 +12,6 @@ using iText.Layout;
 using iText.Layout.Borders;
 using iText.Layout.Element;
 using iText.Layout.Properties;
-using Microsoft.OpenApi.Any;
-using System.Diagnostics;
 
 namespace Curricula.Services
 {
@@ -24,7 +22,7 @@ namespace Curricula.Services
         //private readonly static Color COLOR_PRIMARY = new DeviceRgb(0.31f, 0.647f, 0.988f);
         //private readonly static Color COLOR_PRIMARY = new DeviceRgb(1f, 0.667f, 0.094f);
 
-        public static byte[] JsonToPDF(Curriculum curriculum, bool isAnonymous)
+        public static byte[] JsonToPDF(Curriculum curriculum)
         {
             using (MemoryStream stream = new())
             {
@@ -45,7 +43,7 @@ namespace Curricula.Services
                         .UseAllAvailableWidth()
                         .SetFixedLayout();
 
-                    CreateHeader(mainTable, curriculum, isAnonymous, FONT_BOLD);
+                    CreateHeader(mainTable, curriculum, FONT_BOLD);
 
                     mainTable.AddCell(Separator());
 
@@ -81,7 +79,7 @@ namespace Curricula.Services
 
         }
 
-        private static void CreateHeader(Table mainTable, Curriculum curriculum, bool isAnonymous, PdfFont FONT_BOLD)
+        private static void CreateHeader(Table mainTable, Curriculum curriculum, PdfFont FONT_BOLD)
         {
             //var logo = new Image(ImageDataFactory.Create(System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + @"\Resources\logo-e3.png"))
             //            .SetMaxWidth(UnitValue.CreatePointValue(125))
@@ -95,15 +93,12 @@ namespace Curricula.Services
 
             var divHeaderRight = new Div().SetKeepTogether(true).SetPaddingLeft(10);
 
-            if (!isAnonymous)
-            {
-                divHeaderRight.Add(new Paragraph().Add(new Text($"{curriculum.Nome} ").SetFontColor(COLOR_PRIMARY)).Add(curriculum.Cognome).SetFontSize(30).SetFont(FONT_BOLD));
-                divHeaderRight.Add(new Paragraph().Add(new Text("Telefono: ").SetFont(FONT_BOLD)).Add(new Text($"{curriculum.Telefono}")));
-                divHeaderRight.Add(new Paragraph().Add(new Text("Email: ").SetFont(FONT_BOLD)).Add(new Text($"{curriculum.Email}")));
-                divHeaderRight.Add(new Paragraph().Add(new Text("Indirizzo: ").SetFont(FONT_BOLD)).Add(new Text($"{curriculum.Indirizzo}")));
-                if (curriculum.Website != null)
-                    divHeaderRight.Add(new Paragraph().Add(new Text("Sito: ").SetFont(FONT_BOLD)).Add(new Text($"{curriculum.Website}")));
-            }
+            divHeaderRight.Add(new Paragraph().Add(new Text($"{curriculum.Nome} ").SetFontColor(COLOR_PRIMARY)).Add(curriculum.Cognome).SetFontSize(30).SetFont(FONT_BOLD));
+            divHeaderRight.Add(new Paragraph().Add(new Text("Telefono: ").SetFont(FONT_BOLD)).Add(new Text($"{curriculum.Telefono}")));
+            divHeaderRight.Add(new Paragraph().Add(new Text("Email: ").SetFont(FONT_BOLD)).Add(new Text($"{curriculum.Email}")));
+            divHeaderRight.Add(new Paragraph().Add(new Text("Indirizzo: ").SetFont(FONT_BOLD)).Add(new Text($"{curriculum.Indirizzo}")));
+            if (curriculum.Website != null)
+                divHeaderRight.Add(new Paragraph().Add(new Text("Sito: ").SetFont(FONT_BOLD)).Add(new Text($"{curriculum.Website}")));
 
             var cellHeaderRight = NewCell()
                 .Add(divHeaderRight)

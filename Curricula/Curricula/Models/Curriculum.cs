@@ -1,14 +1,12 @@
 namespace Curricula.Models
 {
     public class Curriculum {
-        public string? Id { get; set; }
         public required string Nome { get; set; }
         public required string Cognome { get; set; }
         public required string Indirizzo { get; set; }
         public required string Telefono { get; set; }
         public required string Email { get; set; }
         public string? Website { get; set; }
-        public DateOnly? DataModifica { get; set; }
         public List<WorkExperience>? Esperienze { get; set; }
         public List<Educazione>? Studi { get; set; }
         /*
