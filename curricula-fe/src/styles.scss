@@ -13,12 +13,9 @@ html {
     height: 100%;
     background-color: var(--mat-sys-background);
 
-    @include mat.theme(
-        (
-            color: theme.$primary-palette,
+    @include mat.theme((color: theme.$primary-palette,
             typography: Roboto,
-        )
-    );
+        ));
 }
 
 body {

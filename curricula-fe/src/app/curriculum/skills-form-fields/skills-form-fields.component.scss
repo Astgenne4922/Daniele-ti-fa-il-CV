@@ -1,9 +1,10 @@
 mat-divider.mat-divider-vertical {
     display: inline;
+    border-top: solid var(--mat-divider-color) 10px;
 }
 
 fieldset {
-    > div > div:first-child {
+    >div>div:first-child {
         display: inline-flex;
         justify-content: flex-start;
         flex-direction: row;
@@ -11,14 +12,14 @@ fieldset {
     }
 
     div[formArrayName="lista"] {
-        > span {
+        >span {
             display: inline-flex;
             justify-content: flex-start;
             flex-direction: row;
             flex-wrap: wrap;
         }
 
-        > button:only-child {
+        >button:only-child {
             margin-bottom: 22.25px;
         }
     }
