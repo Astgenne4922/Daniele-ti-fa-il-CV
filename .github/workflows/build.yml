@@ -1,0 +1,46 @@
+name: Build app for windows
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest  
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Make .NET Core Server excutable
+      working-directory: Curricula/Curricula
+      run: dotnet publish /p:PublishProfile=Properties\PublishProfiles\FolderProfile.pubxml
+      
+    - name: prova
+      working-directory: Curricula/Curricula
+      run: dir /S /B /A:D
+      shell: cmd
+    # - uses: actions/setup-node@v4.3.0
+    #   with:
+    #     node-version: 22.x
+        
+    # - name: npm install
+    #   working-directory: curricula-fe
+    #   run: npm install
+          
+    # - name: electron forge
+    #   working-directory: curricula-fe
+    #   run: npm run make
+    
+    # - name: Upload build artifacts
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: App installer
+    #     working-directory: curricula-fe
+    #     path: out\make\squirrel.windows\x64\*.exe
