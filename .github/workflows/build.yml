@@ -20,7 +20,7 @@ jobs:
 
     - name: Make .NET Core Server excutable
       working-directory: Curricula/Curricula
-      run: dotnet publish /p:PublishProfile=Properties\PublishProfiles\FolderProfile.pubxml && dotnet workload list
+      run: dotnet publish /p:PublishProfile=Properties\PublishProfiles\FolderProfile.pubxml && dir /S /B /A:D
 
     # - uses: actions/setup-node@v4.3.0
     #   with:
