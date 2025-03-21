@@ -4,7 +4,7 @@ const { FuseV1Options, FuseVersion } = require("@electron/fuses");
 module.exports = {
     packagerConfig: {
         asar: true,
-        extraResource: ["../Curricula/Curricula/bin/Release/net8.0/publish/Curricula.exe", "./Resources"],
+        extraResource: ["../Curricula/Curricula/bin/Release/net8.0/win-x64/publish/Curricula.exe", "./Resources"],
         name: "Daniele ti fa il CV",
         icon: "./Resources/icon",
     },
