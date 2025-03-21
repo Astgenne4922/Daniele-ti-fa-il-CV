@@ -38,5 +38,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: App installer
-        working-directory: curricula-fe
-        path: out\make\squirrel.windows\x64\*.exe
+        path: curricula-fe\out\make\squirrel.windows\x64\*.exe
