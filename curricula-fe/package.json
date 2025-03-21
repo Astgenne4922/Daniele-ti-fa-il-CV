@@ -1,16 +1,13 @@
 {
     "name": "curricula-page",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "main": "main.js",
     "author": "Daniele Candido",
     "description": "Curriculum App",
     "scripts": {
-        "electron": "ng build && electron .",
         "ng": "ng",
         "start": "ng build && electron-forge start",
         "build": "ng build",
-        "watch": "ng build --watch --configuration development",
-        "test": "ng test",
         "package": "ng build && electron-forge package",
         "make": "ng build && electron-forge make"
     },
