@@ -20,7 +20,7 @@ jobs:
 
     - name: Make .NET Core Server excutable
       working-directory: Curricula/Curricula
-      run: dotnet publish /p:PublishProfile=Properties\PublishProfiles\FolderProfile.pubxml && dir /S /B /A:D
+      run: dotnet publish /p:PublishProfile=Properties\PublishProfiles\FolderProfile.pubxml
       
     - name: prova
       working-directory: Curricula/Curricula
