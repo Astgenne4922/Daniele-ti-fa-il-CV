@@ -22,14 +22,14 @@ jobs:
       working-directory: Curricula/Curricula
       run: dotnet publish /p:PublishProfile=Properties\PublishProfiles\FolderProfile.pubxml
 
-    - uses: actions/setup-node@v4.3
+    - uses: actions/setup-node@v4.3.0
       with:
-        node-version: '22'
+        node-version: 22.x
         
     - name: npm install
       working-directory: curricula-fe
       run: npm install
-      
+          
     - name: electron forge
       working-directory: curricula-fe
       run: npm run make
